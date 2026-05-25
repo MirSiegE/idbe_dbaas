@@ -1,0 +1,26 @@
+{
+  "name": "idbe_dbaas",
+  "version": "1.0.0",
+  "description": "This project is the new managed database platform layer around the existing IntelliDB Enterprise product.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MirSiegE/idbe_dbaas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MirSiegE/idbe_dbaas/issues"
+  },
+  "homepage": "https://github.com/MirSiegE/idbe_dbaas#readme",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.4",
+    "@grpc/proto-loader": "^0.8.1",
+    "dotenv": "^17.4.2",
+    "pg": "^8.21.0"
+  }
+}
