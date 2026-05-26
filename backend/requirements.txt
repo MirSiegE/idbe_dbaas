@@ -1,0 +1,32 @@
+# Web framework — builds our REST APIs
+fastapi==0.111.0
+
+# Server — runs our FastAPI app
+uvicorn==0.29.0
+
+# ORM — connects Python to PostgreSQL (Metadata DB)
+sqlalchemy==2.0.30
+
+# PostgreSQL driver — lets SQLAlchemy talk to PostgreSQL
+psycopg2-binary==2.9.9
+
+# JWT — handles token creation and validation for auth
+python-jose[cryptography]==3.3.0
+
+# Password hashing — bcrypt for storing passwords safely
+passlib[bcrypt]==1.7.4
+
+# Environment variables — reads our .env file
+python-dotenv==1.0.1
+
+# Data validation — validates all request and response shapes
+pydantic[email]==2.7.1
+
+# Pydantic settings — reads config from .env into Python classes
+pydantic-settings==2.2.1
+
+# Redis — stores JWT blocklist for logout
+redis==5.0.4
+
+# Form data support — needed by FastAPI for file/form handling
+python-multipart==0.0.9
