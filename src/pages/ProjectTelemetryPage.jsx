@@ -1,4 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, BarChart, Bar, Legend
+} from 'recharts'
 import Sidebar from '../components/dashboard/Sidebar'
 import TopBar from '../components/dashboard/TopBar'
 
@@ -7,7 +11,7 @@ const dummyProjects = {
   2: { name: 'ecommerce_app', schema: 'tenant_205' },
 }
 
-const telemetryData = {
+const infraMetrics = {
   cpu: { value: '62%', status: 'High', statusColor: 'text-red-500' },
   ram: { value: '71%', status: 'Moderate', statusColor: 'text-amber-600' },
   storage: { value: '58%', status: 'Normal', statusColor: 'text-gray-400' },
@@ -16,29 +20,32 @@ const telemetryData = {
   workload: { value: 'Medium', status: 'Stable', statusColor: 'text-gray-400' },
 }
 
-const chartData = {
-  cpu: [40, 55, 48, 70, 62, 80, 62],
-  ram: [55, 60, 65, 68, 70, 72, 71],
-  storage: [45, 47, 50, 52, 55, 57, 58],
-  bandwidth: [35, 42, 50, 60, 65, 72, 76],
-}
+const derivedMetrics = [
+  { label: 'Tenant resource consumption', value: '41%', status: 'Normal', statusColor: 'text-gray-400' },
+  { label: 'Tenant bandwidth activity', value: '18 GB', status: 'Normal', statusColor: 'text-gray-400' },
+  { label: 'Tenant storage activity', value: '45 GB', status: 'Normal', statusColor: 'text-gray-400' },
+  { label: 'Query workload intensity', value: 'Medium', status: 'Stable', statusColor: 'text-gray-400' },
+  { label: 'Tenant workload share', value: '32%', status: 'Normal', statusColor: 'text-gray-400' },
+  { label: 'Cluster workload imbalance', value: 'Low', status: 'Stable', statusColor: 'text-green-500' },
+]
 
-function MiniChart({ data, color }) {
-  const max = Math.max(...data)
-  return (
-    <div className="flex items-end gap-1 h-12">
-      {data.map((val, i) => (
-        <div
-          key={i}
-          className={`flex-1 rounded-t-sm ${
-            i === data.length - 1 ? color : 'bg-blue-200'
-          }`}
-          style={{ height: `${(val / max) * 100}%` }}
-        />
-      ))}
-    </div>
-  )
-}
+const infraTrendData = [
+  { day: 'Mon', cpu: 50, ram: 60, storage: 45 },
+  { day: 'Tue', cpu: 55, ram: 63, storage: 47 },
+  { day: 'Wed', cpu: 58, ram: 66, storage: 50 },
+  { day: 'Thu', cpu: 62, ram: 68, storage: 53 },
+  { day: 'Fri', cpu: 60, ram: 70, storage: 55 },
+  { day: 'Sat', cpu: 62, ram: 71, storage: 58 },
+]
+
+const workloadTrendData = [
+  { day: 'Mon', bandwidth: 12, io: 1.8, workload: 25 },
+  { day: 'Tue', bandwidth: 14, io: 2.0, workload: 28 },
+  { day: 'Wed', bandwidth: 15, io: 2.1, workload: 30 },
+  { day: 'Thu', bandwidth: 16, io: 2.2, workload: 32 },
+  { day: 'Fri', bandwidth: 17, io: 2.3, workload: 31 },
+  { day: 'Sat', bandwidth: 18, io: 2.4, workload: 32 },
+]
 
 function ProjectTelemetryPage() {
   const { id } = useParams()
@@ -69,71 +76,98 @@ function ProjectTelemetryPage() {
               <p className="text-sm font-medium text-gray-800">{project.name}</p>
               <p className="text-xs text-gray-400">Schema: {project.schema}</p>
             </div>
-            <span className="text-[9px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
-              Active
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
+                Live
+              </span>
+              <span className="text-[9px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
+                Active
+              </span>
+            </div>
           </div>
 
-          {/* Live Badge */}
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-medium text-gray-800">Infrastructure metrics</p>
-            <span className="text-[9px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
-              Live
-            </span>
-          </div>
-
-          {/* Metric Cards */}
+          {/* Infrastructure Metrics */}
+          <p className="text-xs font-medium text-gray-800 mb-2">
+            Infrastructure metrics
+          </p>
           <div className="grid grid-cols-3 gap-2 mb-4">
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">CPU utilization</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.cpu.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.cpu.statusColor}`}>{telemetryData.cpu.status}</p>
+            {Object.entries(infraMetrics).map(([key, metric]) => (
+              <div key={key} className="bg-white border border-gray-100 rounded-xl p-2.5">
+                <p className="text-[10px] text-gray-400 mb-1 capitalize">
+                  {key === 'io' ? 'I/O operations' : key.replace(/([A-Z])/g, ' $1')} 
+                </p>
+                <p className="text-base font-medium text-gray-800">{metric.value}</p>
+                <p className={`text-[10px] mt-1 ${metric.statusColor}`}>{metric.status}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Infrastructure Charts */}
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="bg-white border border-gray-100 rounded-xl p-3">
+              <p className="text-xs font-medium text-gray-800 mb-3">
+                CPU, RAM, Storage — 6 days
+              </p>
+              <ResponsiveContainer width="100%" height={160}>
+                <LineChart data={infraTrendData}>
+                  <XAxis dataKey="day" tick={{ fontSize: 9 }} />
+                  <YAxis tick={{ fontSize: 9 }} />
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 10 }} />
+                  <Line type="monotone" dataKey="cpu" stroke="#3b82f6" strokeWidth={2} name="CPU %" dot={false} />
+                  <Line type="monotone" dataKey="ram" stroke="#60a5fa" strokeWidth={2} name="RAM %" dot={false} />
+                  <Line type="monotone" dataKey="storage" stroke="#93c5fd" strokeWidth={2} name="Storage %" dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">RAM utilization</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.ram.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.ram.statusColor}`}>{telemetryData.ram.status}</p>
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">Storage usage</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.storage.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.storage.statusColor}`}>{telemetryData.storage.status}</p>
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">Bandwidth usage</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.bandwidth.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.bandwidth.statusColor}`}>{telemetryData.bandwidth.status}</p>
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">I/O operations</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.io.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.io.statusColor}`}>{telemetryData.io.status}</p>
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-2.5">
-              <p className="text-[10px] text-gray-400 mb-1">Workload intensity</p>
-              <p className="text-base font-medium text-gray-800">{telemetryData.workload.value}</p>
-              <p className={`text-[10px] mt-1 ${telemetryData.workload.statusColor}`}>{telemetryData.workload.status}</p>
+
+            <div className="bg-white border border-gray-100 rounded-xl p-3">
+              <p className="text-xs font-medium text-gray-800 mb-3">
+                Bandwidth, I/O, Workload — 6 days
+              </p>
+              <ResponsiveContainer width="100%" height={160}>
+                <LineChart data={workloadTrendData}>
+                  <XAxis dataKey="day" tick={{ fontSize: 9 }} />
+                  <YAxis tick={{ fontSize: 9 }} />
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 10 }} />
+                  <Line type="monotone" dataKey="bandwidth" stroke="#3b82f6" strokeWidth={2} name="Bandwidth GB" dot={false} />
+                  <Line type="monotone" dataKey="io" stroke="#60a5fa" strokeWidth={2} name="I/O ops" dot={false} />
+                  <Line type="monotone" dataKey="workload" stroke="#93c5fd" strokeWidth={2} name="Workload %" dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Charts */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white border border-gray-100 rounded-xl p-3">
-              <p className="text-xs font-medium text-gray-800 mb-2">CPU utilization — 7 days</p>
-              <MiniChart data={chartData.cpu} color="bg-blue-400" />
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3">
-              <p className="text-xs font-medium text-gray-800 mb-2">RAM utilization — 7 days</p>
-              <MiniChart data={chartData.ram} color="bg-blue-400" />
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3">
-              <p className="text-xs font-medium text-gray-800 mb-2">Storage usage — 7 days</p>
-              <MiniChart data={chartData.storage} color="bg-blue-400" />
-            </div>
-            <div className="bg-white border border-gray-100 rounded-xl p-3">
-              <p className="text-xs font-medium text-gray-800 mb-2">Bandwidth + I/O — 7 days</p>
-              <MiniChart data={chartData.bandwidth} color="bg-blue-400" />
-            </div>
+          {/* Derived Tenant Metrics */}
+          <p className="text-xs font-medium text-gray-800 mb-2">
+            Derived tenant metrics
+          </p>
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            {derivedMetrics.map((metric, index) => (
+              <div key={index} className="bg-white border border-gray-100 rounded-xl p-2.5">
+                <p className="text-[10px] text-gray-400 mb-1">{metric.label}</p>
+                <p className="text-base font-medium text-gray-800">{metric.value}</p>
+                <p className={`text-[10px] mt-1 ${metric.statusColor}`}>{metric.status}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Workload Bar Chart */}
+          <div className="bg-white border border-gray-100 rounded-xl p-3">
+            <p className="text-xs font-medium text-gray-800 mb-3">
+              Tenant workload share — 6 days
+            </p>
+            <ResponsiveContainer width="100%" height={160}>
+              <BarChart data={workloadTrendData}>
+                <XAxis dataKey="day" tick={{ fontSize: 9 }} />
+                <YAxis tick={{ fontSize: 9 }} />
+                <Tooltip />
+                <Legend wrapperStyle={{ fontSize: 10 }} />
+                <Bar dataKey="workload" fill="#3b82f6" name="Workload %" />
+                <Bar dataKey="bandwidth" fill="#93c5fd" name="Bandwidth GB" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
         </div>
