@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import ProjectsPage from './pages/ProjectsPage'
+import ProjectTelemetryPage from './pages/ProjectTelemetryPage'
+import ProjectBillingPage from './pages/ProjectBillingPage'
+import ProjectCredentialsPage from './pages/ProjectCredentialsPage'
 
 function App() {
   return (
@@ -10,6 +13,9 @@ function App() {
         <Route path="/" element={<AuthPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:id/telemetry" element={<ProjectTelemetryPage />} />
+        <Route path="/projects/:id/billing" element={<ProjectBillingPage />} />
+        <Route path="/projects/:id/credentials" element={<ProjectCredentialsPage />} />
       </Routes>
     </BrowserRouter>
   )
