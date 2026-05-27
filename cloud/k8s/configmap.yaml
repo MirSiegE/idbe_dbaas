@@ -5,4 +5,4 @@ metadata:
   namespace: intellidb
 data:
   POSTGRES_DB: intellidb
-  POSTGRES_USER: postgres
+  SCOPE: intellidb-cluster
