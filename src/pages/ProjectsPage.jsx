@@ -18,6 +18,7 @@ const dummyProjects = [
   },
 ]
 
+
 function ProjectsPage() {
   const [showModal, setShowModal] = useState(false)
   const [projectName, setProjectName] = useState('')
@@ -57,10 +58,33 @@ function ProjectsPage() {
             + Create project
           </button>
 
-          {/* Project Cards */}
-          {dummyProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          
+
+          {/* Project Cards or Empty State */}
+{dummyProjects.length === 0 ? (
+  <div className="flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl p-12 text-center">
+    <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-4">
+      <span className="text-2xl">🗄️</span>
+    </div>
+    <p className="text-sm font-medium text-gray-800 mb-2">
+      No projects created yet
+    </p>
+    <p className="text-xs text-gray-400 mb-4">
+      Create your first project to get started
+    </p>
+    <button
+      onClick={() => setShowModal(true)}
+      className="flex items-center gap-2 text-xs px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+    >
+      + Create project
+    </button>
+  </div>
+) : (
+  dummyProjects.map((project) => (
+    <ProjectCard key={project.id} project={project} />
+  ))
+)}
+
 
         </div>
       </div>

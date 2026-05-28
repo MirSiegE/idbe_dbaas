@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import ProjectsPage from './pages/ProjectsPage'
+import OnboardingPage from './pages/OnboardingPage'
 import ProjectTelemetryPage from './pages/ProjectTelemetryPage'
 import ProjectBillingPage from './pages/ProjectBillingPage'
 import ProjectCredentialsPage from './pages/ProjectCredentialsPage'
@@ -11,6 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AuthPage />} />
+        <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:id/telemetry" element={<ProjectTelemetryPage />} />
