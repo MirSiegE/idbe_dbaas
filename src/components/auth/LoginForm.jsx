@@ -1,4 +1,12 @@
+import { useNavigate } from 'react-router-dom'
+
 function LoginForm({ onSwitch }) {
+  const navigate = useNavigate()
+
+  const handleLogin = () => {
+    navigate('/dashboard')
+  }
+
   return (
     <div className="space-y-4">
 
@@ -46,7 +54,10 @@ function LoginForm({ onSwitch }) {
       </div>
 
       {/* Sign in Button */}
-      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors">
+      <button
+        onClick={handleLogin}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors"
+      >
         Sign in
       </button>
 
