@@ -65,7 +65,7 @@ class ScalingConsumer:
         self._running = False
         logger.info("Scaling consumer stopped")
 
-        def handle_event(self, event: dict):
+    def handle_event(self, event: dict):
             """
             Process one scaling event.
 
