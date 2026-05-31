@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package dbmanager;
+
+service Dbmanager {
+    rpc CreateTenantSchema (CreateSchemaRequest) returns (CreateSchemaResponse);
+    rpc DeleteTenantSchema (DeleteSchemaRequest) returns (DeleteSchemaResponse);
+    rpc GetTelemetry (TelemetryRequest) returns (TelemetryResponse);
+    rpc GetTenantStats (TenantStatsRequest) returns (TenantStatsResponse);
+}
+
+message CreateSchemaRequest {
+    int32 tenant_id = 1;
+    string schema_name = 2;
+    string user_name = 3;
+    string company = 4;
+    string node = 5;
+    string storage = 6;
+    string ram = 7;
+    int32 conn_limit = 8;
+}
+
+message CreateSchemaResponse {
+    string status = 1;
+    string schema_name = 2;
+    string message = 3;
+}
+
+message DeleteSchemaRequest {
+    int32 tenant_id = 1;
+    string schema_name = 2;
+}
+
+message DeleteSchemaResponse {
+    string status = 1;
+    string schema_name = 2;
+    string message = 3;
+}
+
+message TelemetryRequest {
+}
+
+message ConnectionStat {
+    string state = 1;
+    int32 total = 2;
+}
+
+message TopQuery {
+    string query = 1;
+    int32 calls = 2;
+    double mean_exec_time = 3;
+    double total_exec_time = 4;
+}
+
+message TelemetryResponse {
+    string status = 1;
+    repeated ConnectionStat connections = 2;
+    int64 wal_records = 3;
+    int64 wal_bytes = 4;
+    int64 wal_fpi = 5;
+    int64 blks_hit = 6;
+    int64 blks_read = 7;
+    int64 xact_commit = 8;
+    int64 xact_rollback = 9;
+    repeated TopQuery top_queries = 10;
+}
+
+message TenantStatsRequest {
+    string schema_name = 1;
+}
+
+message TenantStatsResponse {
+    string status = 1;
+    string schema_name = 2;
+    string schema_size = 3;
+    int32 active_connections = 4;
+}

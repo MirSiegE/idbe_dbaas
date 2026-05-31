@@ -60,3 +60,40 @@ async function getTelemetry(call, callback) {
     }
 }
 // GET TENANT STATS
+async function getTenantStats(call, callback) {
+    const { schema_name} = call.request;
+    console.log(`\n GetTenantStats called for schema: ${schema_name}`);
+
+    try {
+        const sizeResult = await pool.query(`
+            SELECT pg_size_pretty(SUM(pg_total_relation_size(quote_ident(schemaname) || '.' || quote_ident(tablename))))
+            AS schema_size FROM pg_tables WHERE schemaname = $1`, [schema_name]);
+
+    const connResult = await pool.query(`
+        SELECT COUNT(*) ::int AS active_connections FROM pg_stat_activity 
+        WHERE usename = $1 `, [`${schema_name}_role`]);
+
+    const schemaSize = sizeResult.rows[0]?.schema_size || '0 bytes';
+    const activeConnections = connResult.rows[0]?.activeConnections || 0;
+
+    console.log(`TenantStats: size=${schemaSize}, connections=${activeConnections}\n`);
+
+    callback(null, {
+        status: 'success',
+        schema_size: schemaSize,
+        active_connections: activeConnections,
+        schema_name: schema_name
+    });
+
+    } catch (err) {
+        console.error(`GetTenantStats failed:`, err.message);
+        callback(null, {
+            status: 'error',
+            schema_size: '0 bytes',
+            active_connections: 0,
+            schema_name: schema_name
+        });
+    }
+}
+
+module.exports = { getTelemetry, getTenantStats };
