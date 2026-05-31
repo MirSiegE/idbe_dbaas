@@ -138,7 +138,43 @@ else
   echo "❌ PgBouncer pod is NOT Ready (not deployed yet or still starting)"
   FAIL=$((FAIL+1))
 fi
+echo ""
+echo "--- Checking Patroni ---"
 
+PATRONI0=$(kubectl exec postgres-0 -n intellidb -- \
+  curl -s http://localhost:8008/patroni 2>/dev/null)
+
+PATRONI1=$(kubectl exec postgres-1 -n intellidb -- \
+  curl -s http://localhost:8008/patroni 2>/dev/null)
+
+if [ -n "$PATRONI0" ] && [ -n "$PATRONI1" ]; then
+    echo "✅ Patroni API responding on both pods"
+    PASS=$((PASS+1))
+else
+    echo "❌ Patroni API not responding"
+    FAIL=$((FAIL+1))
+fi
+
+if echo "$PATRONI0" | grep -q '"role": "master"' \
+   && echo "$PATRONI1" | grep -q '"role": "replica"'; then
+
+    echo "✅ Patroni roles are healthy"
+    echo "   postgres-0 → master"
+    echo "   postgres-1 → replica"
+    PASS=$((PASS+1))
+
+elif echo "$PATRONI1" | grep -q '"role": "master"' \
+     && echo "$PATRONI0" | grep -q '"role": "replica"'; then
+
+    echo "✅ Patroni roles are healthy"
+    echo "   postgres-1 → master"
+    echo "   postgres-0 → replica"
+    PASS=$((PASS+1))
+
+else
+    echo "❌ Patroni role configuration invalid"
+    FAIL=$((FAIL+1))
+fi
 echo ""
 echo "========================================"
 if [ $FAIL -eq 0 ]; then
