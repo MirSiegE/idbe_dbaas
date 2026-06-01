@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from config import NPF_WEIGHTS, QLF_WEIGHTS, SPS_WEIGHTS
+from Monitoring.billing.config import NPF_WEIGHTS, QLF_WEIGHTS, SPS_WEIGHTS
 
 
 @dataclass(frozen=True)

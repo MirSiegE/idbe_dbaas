@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from billing import BILLING_RATES, PLATFORM_SERVICE_FEES, build_billing_result
-from config import BASE_PLATFORM_FEE
-from derived_metrics import build_derived_metrics
-from normalization import parse_timestamp, process_telemetry
-from sample_data import (
+from Monitoring.billing import BILLING_RATES, PLATFORM_SERVICE_FEES, build_billing_result
+from Monitoring.billing.config import BASE_PLATFORM_FEE
+from Monitoring.billing.derived_metrics import build_derived_metrics
+from Monitoring.billing.normalization import parse_timestamp, process_telemetry
+from Monitoring.billing.sample_data import (
     SAMPLE_CURRENT_TIME,
     SAMPLE_TELEMETRY_RECORDS,
 )

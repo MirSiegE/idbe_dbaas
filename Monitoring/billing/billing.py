@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Iterable
 
-from config import BASE_PLATFORM_FEE, BILLING_RATE_VALUES, PLATFORM_SERVICE_FEE_VALUES
+from Monitoring.billing.config import BASE_PLATFORM_FEE, BILLING_RATE_VALUES, PLATFORM_SERVICE_FEE_VALUES
 
 from .billing_types import BillingRateCard, BillingResult, PlatformServiceFeeConfig
 
