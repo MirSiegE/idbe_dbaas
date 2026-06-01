@@ -32,7 +32,7 @@ def execute_query(
 
     ''' TODO: fetch real role from Metadata DB using db_id + user_id '''
 
-    role = "OWNER"                                                                      # stub — will be replaced with DB lookup
+    role = "EDITOR"                                                                      # stub — will be replaced with DB lookup
 
     # Step 1: parse query type
     try:
