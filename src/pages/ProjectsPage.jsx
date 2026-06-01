@@ -2,30 +2,34 @@ import { useState } from 'react'
 import Sidebar from '../components/dashboard/Sidebar'
 import TopBar from '../components/dashboard/TopBar'
 import ProjectCard from '../components/dashboard/ProjectCard'
-
-const dummyProjects = [
-  {
-    id: 1,
-    name: 'student_portal',
-    schema: 'tenant_101',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    name: 'ecommerce_app',
-    schema: 'tenant_205',
-    status: 'Active',
-  },
-]
+import { createDemoProject, getDemoUserMode, getVisibleProjects } from '../data/demoProjects'
 
 function ProjectsPage() {
   const [showModal, setShowModal] = useState(false)
   const [projectName, setProjectName] = useState('')
   const [description, setDescription] = useState('')
+  const [projects, setProjects] = useState(() => getVisibleProjects())
+  const isNewUserDemo = getDemoUserMode() === 'new'
 
   const handleCreate = () => {
     if (projectName.trim() === '') return
-    alert(`Project "${projectName}" created!`)
+    const trimmedProjectName = projectName.trim()
+
+    if (isNewUserDemo) {
+      const project = createDemoProject({
+        name: trimmedProjectName,
+        description,
+      })
+
+      setProjects((currentProjects) => [...currentProjects, project])
+      alert(`Project "${trimmedProjectName}" created!`)
+      setProjectName('')
+      setDescription('')
+      setShowModal(false)
+      return
+    }
+
+    alert(`Project "${trimmedProjectName}" created!`)
     setProjectName('')
     setDescription('')
     setShowModal(false)
@@ -52,7 +56,7 @@ function ProjectsPage() {
                 Your projects
               </h1>
               <p className="text-sm text-gray-400 mt-0.5">
-                {dummyProjects.length} active workspace{dummyProjects.length !== 1 ? 's' : ''}
+                {projects.length} active workspace{projects.length !== 1 ? 's' : ''}
               </p>
             </div>
             <button
@@ -67,7 +71,7 @@ function ProjectsPage() {
           </div>
 
           {/* Project Cards or Empty State */}
-          {dummyProjects.length === 0 ? (
+          {projects.length === 0 ? (
             <div className="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl p-16 text-center">
               <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -92,7 +96,7 @@ function ProjectsPage() {
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {dummyProjects.map((project) => (
+              {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
             </div>

@@ -19,7 +19,7 @@ function LeftSection() {
       <p className="text-gray-500 mb-8 text-base leading-relaxed">
         InteliDB Enterprise helps teams monitor, analyze and optimize
         PostgreSQL workloads with real-time telemetry, usage-based
-        billing and smart recommendations.
+        billing and predictive insights.
       </p>
 
       {/* Features List */}
@@ -50,8 +50,8 @@ function LeftSection() {
             ⚡
           </div>
           <div>
-            <p className="font-semibold text-gray-800">Smart Recommendations</p>
-            <p className="text-sm text-gray-500">AI-driven insights to optimize performance and reduce costs.</p>
+            <p className="font-semibold text-gray-800">Predictive Insights</p>
+            <p className="text-sm text-gray-500">Forecast usage and billing patterns before they surprise you.</p>
           </div>
         </div>
 

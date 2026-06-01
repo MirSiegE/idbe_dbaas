@@ -1,15 +1,8 @@
-const billingData = {
-  currentBilling: 8240,
-  predictedMonthEnd: 12500,
-  growthTrend: '+22%',
-  activeProjects: 2,
-}
+import { dashboardBillingData } from '../../data/demoBilling'
 
 function BillingCards() {
   return (
     <div className="grid grid-cols-4 gap-4">
-
-      {/* Current Billing */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-medium text-gray-500">Current billing</p>
@@ -20,12 +13,11 @@ function BillingCards() {
           </div>
         </div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight">
-          ₹{billingData.currentBilling.toLocaleString()}
+          Rs {dashboardBillingData.currentBilling.toLocaleString()}
         </p>
         <p className="text-xs text-gray-400 mt-1.5">Current billing period</p>
       </div>
 
-      {/* Predicted Month End */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-medium text-gray-500">Predicted month-end</p>
@@ -36,17 +28,16 @@ function BillingCards() {
           </div>
         </div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight">
-          ₹{billingData.predictedMonthEnd.toLocaleString()}
+          Rs {dashboardBillingData.predictedMonthEnd.toLocaleString()}
         </p>
         <div className="flex items-center gap-1.5 mt-1.5">
           <span className="text-xs font-medium text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
-            {billingData.growthTrend}
+            {dashboardBillingData.growthTrend}
           </span>
           <span className="text-xs text-gray-400">vs last month</span>
         </div>
       </div>
 
-      {/* Billing Growth Trend */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-medium text-gray-500">Billing growth trend</p>
@@ -57,12 +48,11 @@ function BillingCards() {
           </div>
         </div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight">
-          +32.3%
+          {dashboardBillingData.billingGrowthTrend}
         </p>
         <p className="text-xs text-gray-400 mt-1.5">Projected increase</p>
       </div>
 
-      {/* Active Projects */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-medium text-gray-500">Active projects</p>
@@ -73,14 +63,13 @@ function BillingCards() {
           </div>
         </div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight">
-          {billingData.activeProjects}
+          {dashboardBillingData.activeProjects}
         </p>
         <div className="flex items-center gap-1.5 mt-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
           <span className="text-xs text-gray-400">All running</span>
         </div>
       </div>
-
     </div>
   )
 }

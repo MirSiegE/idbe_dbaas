@@ -1,7 +1,14 @@
 import { useNavigate } from 'react-router-dom'
+import { resetNewUserProjects, setDemoUserMode } from '../../data/demoProjects'
 
 function SignupForm({ onSwitch }) {
   const navigate = useNavigate()
+
+  const handleSignup = () => {
+    setDemoUserMode('new')
+    resetNewUserProjects()
+    navigate('/dashboard')
+  }
 
   return (
     <div className="space-y-4">
@@ -14,14 +21,14 @@ function SignupForm({ onSwitch }) {
         </p>
       </div>
 
-      {/* Full Name */}
+      {/* Username */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1">
-          Full Name
+          Username
         </label>
         <input
           type="text"
-          placeholder="Enter your full name"
+          placeholder="Choose a username"
           className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -38,10 +45,10 @@ function SignupForm({ onSwitch }) {
         />
       </div>
 
-      {/* Password */}
+      {/* Create Password */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1">
-          Password
+          Create password
         </label>
         <input
           type="password"
@@ -53,7 +60,7 @@ function SignupForm({ onSwitch }) {
       {/* Confirm Password */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1">
-          Confirm Password
+          Confirm password
         </label>
         <input
           type="password"
@@ -64,7 +71,7 @@ function SignupForm({ onSwitch }) {
 
       {/* Create Account Button */}
       <button
-        onClick={() => navigate('/onboarding')}
+        onClick={handleSignup}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors"
       >
         Create account

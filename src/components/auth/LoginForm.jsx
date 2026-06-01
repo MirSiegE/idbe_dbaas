@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
+import { setDemoUserMode } from '../../data/demoProjects'
 
 function LoginForm({ onSwitch }) {
   const navigate = useNavigate()
 
   const handleLogin = () => {
+    setDemoUserMode('existing')
     navigate('/dashboard')
   }
 
