@@ -13,11 +13,10 @@ class BillingRateCard:
 
 
 @dataclass(frozen=True)
-class PlatformFeeConfig:
+class PlatformServiceFeeConfig:
     ml_service_cost: float = 0.0
     monitoring_service_cost: float = 0.0
     analytics_processing_cost: float = 0.0
-    base_platform_fee: float = 0.0
 
 
 @dataclass(frozen=True)

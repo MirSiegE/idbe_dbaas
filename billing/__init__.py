@@ -1,19 +1,19 @@
 from .billing import (
-    DEFAULT_BILLING_RATES,
-    DEFAULT_PLATFORM_FEES,
+    BILLING_RATES,
+    PLATFORM_SERVICE_FEES,
     aggregate_bills_by_period,
     build_billing_result,
     calculate_billing_records,
     calculate_tenant_bill,
 )
-from .billing_types import BillingRateCard, BillingResult, PlatformFeeConfig
+from .billing_types import BillingRateCard, BillingResult, PlatformServiceFeeConfig
 
 __all__ = [
-    "DEFAULT_BILLING_RATES",
-    "DEFAULT_PLATFORM_FEES",
+    "BILLING_RATES",
+    "PLATFORM_SERVICE_FEES",
     "BillingRateCard",
     "BillingResult",
-    "PlatformFeeConfig",
+    "PlatformServiceFeeConfig",
     "aggregate_bills_by_period",
     "build_billing_result",
     "calculate_billing_records",

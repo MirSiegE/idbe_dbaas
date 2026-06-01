@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from billing import build_billing_result
+from billing import BILLING_RATES, PLATFORM_SERVICE_FEES, build_billing_result
+from config import BASE_PLATFORM_FEE
 from derived_metrics import build_derived_metrics
 from normalization import parse_timestamp, process_telemetry
 from sample_data import (
-    SAMPLE_BILLING_RATES,
     SAMPLE_CURRENT_TIME,
-    SAMPLE_PLATFORM_FEES,
     SAMPLE_TELEMETRY_RECORDS,
 )
 
@@ -24,8 +23,9 @@ def main() -> None:
     derived_result = build_derived_metrics(normalized_result["records"])
     billing_result = build_billing_result(
         derived_result.billing_data,
-        rates=SAMPLE_BILLING_RATES,
-        fees=SAMPLE_PLATFORM_FEES,
+        rates=BILLING_RATES,
+        service_fees=PLATFORM_SERVICE_FEES,
+        base_platform_fee=BASE_PLATFORM_FEE,
     )
 
     print_section("Pipeline Summary")

@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Iterable
 
-from .metric_types import DEFAULT_NPF_WEIGHTS, DEFAULT_QLF_WEIGHTS, DEFAULT_SPS_WEIGHTS
+from .metric_types import NPF_WEIGHTS, QLF_WEIGHTS, SPS_WEIGHTS
 
 
 def parse_timestamp(value: str) -> datetime:
@@ -158,9 +158,9 @@ def add_pressure_scores(
     npf_weights: dict[str, float] | None = None,
     sps_weights: dict[str, float] | None = None,
 ) -> list[dict[str, Any]]:
-    qlf_weights = qlf_weights or DEFAULT_QLF_WEIGHTS
-    npf_weights = npf_weights or DEFAULT_NPF_WEIGHTS
-    sps_weights = sps_weights or DEFAULT_SPS_WEIGHTS
+    qlf_weights = qlf_weights or QLF_WEIGHTS
+    npf_weights = npf_weights or NPF_WEIGHTS
+    sps_weights = sps_weights or SPS_WEIGHTS
 
     scored_records: list[dict[str, Any]] = []
     for record in records:

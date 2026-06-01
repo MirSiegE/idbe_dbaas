@@ -12,12 +12,7 @@ from .formulae import (
     group_records,
     weighted_average,
 )
-from .metric_types import (
-    DEFAULT_NPF_WEIGHTS,
-    DEFAULT_QLF_WEIGHTS,
-    DEFAULT_SPS_WEIGHTS,
-    DerivedMetricResult,
-)
+from .metric_types import DerivedMetricResult, NPF_WEIGHTS, QLF_WEIGHTS, SPS_WEIGHTS
 
 
 def build_predictive_data(

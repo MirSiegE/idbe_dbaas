@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from billing import BillingRateCard, PlatformFeeConfig
-
 
 SAMPLE_CURRENT_TIME = "2026-05-26T05:34:00Z"
 
@@ -107,18 +105,3 @@ SAMPLE_TELEMETRY_RECORDS = [
         "cluster_io_throughput": 36000,
     },
 ]
-
-SAMPLE_BILLING_RATES = BillingRateCard(
-    cpu_rate_per_percent_hour=0.01,
-    ram_rate_per_percent_hour=0.008,
-    io_rate_per_throughput_hour=0.0001,
-    bandwidth_rate_per_mb=0.00002,
-    storage_rate_per_gb_hour=0.001,
-)
-
-SAMPLE_PLATFORM_FEES = PlatformFeeConfig(
-    ml_service_cost=0.0,
-    monitoring_service_cost=0.25,
-    analytics_processing_cost=0.10,
-    base_platform_fee=1.0,
-)
