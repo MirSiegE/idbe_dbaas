@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from Monitoring.billing import BILLING_RATES, PLATFORM_SERVICE_FEES, build_billing_result
 from Monitoring.billing.config import BASE_PLATFORM_FEE
 from Monitoring.billing.derived_metrics import build_derived_metrics
